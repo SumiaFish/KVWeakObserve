@@ -65,22 +65,21 @@
 - (void)testUnMemberVars {
     
     ModelB *b = [ModelB new];
-        b.name = @"1";
-        /**
-         快速退出没问题
-        *** -ModelB dealloc~
-        */
-        [b kv_addWeakObserve:self keyPath:@"name" options:(NSKeyValueObservingOptionNew) context:nil isCallBackInMain:YES];
-        /**
-         快速退出会有问题
-         DetailViewController dealloc
-        *** -[DetailViewController retain]: message sent to deallocated instance 0x7fc70542a9e0
-        */
-    //    [b addObserver:self forKeyPath:@"name" options:(NSKeyValueObservingOptionNew) context:nil];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3*NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            b.name = [b.name stringByAppendingString:b.name];
-        });
-    
+    b.name = @"1";
+    /**
+     快速退出没问题
+    *** -ModelB dealloc~
+    */
+    [b kv_addWeakObserve:self keyPath:@"name" options:(NSKeyValueObservingOptionNew) context:nil isCallBackInMain:YES];
+    /**
+     快速退出会有问题
+     DetailViewController dealloc
+    *** -[DetailViewController retain]: message sent to deallocated instance 0x7fc70542a9e0
+    */
+//    [b addObserver:self forKeyPath:@"name" options:(NSKeyValueObservingOptionNew) context:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3*NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        b.name = [b.name stringByAppendingString:b.name];
+    });
 }
 
 - (void)kv_receiveWeakObserveValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {

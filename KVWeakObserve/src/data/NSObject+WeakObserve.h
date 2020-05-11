@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)kv_receiveWeakObserveValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:( void * _Nullable )context;
 
+- (void)kv_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath;
+
 @end
 
 NS_ASSUME_NONNULL_END

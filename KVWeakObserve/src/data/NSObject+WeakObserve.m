@@ -70,6 +70,13 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
                 WeakObserve *wo = obj;
                 if (wo.beObserver == object
                     && [wo.keyPath isEqualToString:keyPath]) {
+                    
+                    // 观察者被释放了，就从记录里删除，不做通知
+                    if (!wo.observer) {
+                        [self kv_compactObject:wo.beObserver forKeyPath:keyPath];
+                        return;
+                    }
+                    
                     if (wo.isCallBackInMain) {
                         if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == 0) {
                             [wo.observer kv_receiveWeakObserveValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -81,6 +88,7 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
                     } else {
                         [wo.observer kv_receiveWeakObserveValueForKeyPath:keyPath ofObject:object change:change context:context];
                     }
+                    
                 }
             }
         }];
@@ -123,6 +131,21 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
     [wo.beObserver addObserver:self forKeyPath:keyPath options:options context:context];
 }
 
+- (void)kv_compactObject:(NSObject *)object forKeyPath:(NSString *)keyPath {
+    NSPointerArray *observers = [_map objectForKey:object];
+    [observers.allObjects enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:WeakObserve.class]) {
+            WeakObserve *wo = obj;
+            if (wo.beObserver == object &&
+                [wo.keyPath isEqualToString:keyPath]) {
+                if (!wo.observer) {
+                    [observers removePointerAtIndex:idx];
+                }
+            }
+        }
+    }];
+}
+
 @end
 
 @implementation NSObject (WeakObserve)
@@ -139,6 +162,10 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
 
 - (void)kv_receiveWeakObserveValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
         
+}
+
+- (void)kv_removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath {
+    [[WeakObserveManager share] kv_compactObject:self forKeyPath:keyPath];
 }
 
 @end
