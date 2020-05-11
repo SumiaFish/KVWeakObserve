@@ -65,6 +65,8 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     
+    dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
+    
     NSPointerArray *observers = [_map objectForKey:object];
     if (observers) {
         [observers.allObjects enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -75,26 +77,32 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
                     
                     // 观察者被释放了，就从记录里删除，不做通知
                     if (!wo.observer) {
+                        
                         [self kv_compactObject:wo.beObserver forKeyPath:keyPath];
-                        return;
-                    }
-                    
-                    if (wo.isCallBackInMain) {
-                        if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == 0) {
-                            [wo.observer kv_receiveWeakObserveValueForKeyPath:keyPath ofObject:object change:change context:context];
-                        } else {
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [wo.observer kv_receiveWeakObserveValueForKeyPath:keyPath ofObject:object change:change context:context];
-                            });
-                        }
+                        
                     } else {
-                        [wo.observer kv_receiveWeakObserveValueForKeyPath:keyPath ofObject:object change:change context:context];
+                        
+                        // 正常发送
+                        if (wo.isCallBackInMain) {
+                            if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == 0) {
+                                [wo.observer kv_receiveWeakObserveValueForKeyPath:keyPath ofObject:object change:change context:context];
+                            } else {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    [wo.observer kv_receiveWeakObserveValueForKeyPath:keyPath ofObject:object change:change context:context];
+                                });
+                            }
+                        } else {
+                            [wo.observer kv_receiveWeakObserveValueForKeyPath:keyPath ofObject:object change:change context:context];
+                        }
+                        
                     }
                     
                 }
             }
         }];
     }
+    
+    dispatch_semaphore_signal(_semaphore);
     
 }
 
