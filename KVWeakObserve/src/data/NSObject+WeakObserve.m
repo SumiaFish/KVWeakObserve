@@ -122,18 +122,16 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
         }
     }];
     
-    if (isExist) {
-        return;
+    if (!isExist) {
+        WeakObserve *wo = [[WeakObserve alloc] init];
+        wo.beObserver = object;
+        wo.observer = observer;
+        wo.keyPath = keyPath;
+        wo.isCallBackInMain = isCallBackInMain;
+        [observers addPointer:(__bridge void * _Nullable)wo];
+        
+        [wo.beObserver addObserver:self forKeyPath:keyPath options:options context:context];
     }
-    
-    WeakObserve *wo = [[WeakObserve alloc] init];
-    wo.beObserver = object;
-    wo.observer = observer;
-    wo.keyPath = keyPath;
-    wo.isCallBackInMain = isCallBackInMain;
-    [observers addPointer:(__bridge void * _Nullable)wo];
-    
-    [wo.beObserver addObserver:self forKeyPath:keyPath options:options context:context];
     
     dispatch_semaphore_signal(_semaphore);
     
