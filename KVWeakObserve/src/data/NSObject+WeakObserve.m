@@ -28,6 +28,7 @@
 @implementation WeakObserveManager
 {
     NSMapTable<id, NSPointerArray *> * _map;
+    dispatch_semaphore_t _semaphore;
 }
 
 static WeakObserveManager *instance = nil;
@@ -55,6 +56,7 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
     if (WeakObserveManagerAllowInitFlags) {
         if (self = [super init]) {
             _map = [[NSMapTable alloc] initWithKeyOptions:(NSPointerFunctionsWeakMemory|NSMapTableObjectPointerPersonality) valueOptions:(NSPointerFunctionsStrongMemory|NSMapTableObjectPointerPersonality) capacity:0];
+            _semaphore = dispatch_semaphore_create(1);
         }
     }
     
@@ -97,6 +99,9 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
 }
 
 - (void)kvimp_addWeakObject:(NSObject *)object observe:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context isCallBackInMain:(BOOL)isCallBackInMain {
+    
+    dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
+    
     NSPointerArray *observers = [_map objectForKey:object];
     if (!observers) {
         observers = [[NSPointerArray alloc] initWithOptions:(NSPointerFunctionsStrongMemory|NSMapTableObjectPointerPersonality)];
@@ -129,9 +134,15 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
     [observers addPointer:(__bridge void * _Nullable)wo];
     
     [wo.beObserver addObserver:self forKeyPath:keyPath options:options context:context];
+    
+    dispatch_semaphore_signal(_semaphore);
+    
 }
 
 - (void)kv_compactObject:(NSObject *)object forKeyPath:(NSString *)keyPath {
+    
+    dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
+    
     NSPointerArray *observers = [_map objectForKey:object];
     [observers.allObjects enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj isKindOfClass:WeakObserve.class]) {
@@ -144,6 +155,9 @@ static BOOL WeakObserveManagerAllowInitFlags = false;
             }
         }
     }];
+    
+    dispatch_semaphore_signal(_semaphore);
+    
 }
 
 @end
