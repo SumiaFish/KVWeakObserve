@@ -16,6 +16,13 @@
 		04A8AF19246934300037F086 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8AF18246934300037F086 /* main.m */; };
 		04A8AF23246934300037F086 /* KVWeakObserveTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8AF22246934300037F086 /* KVWeakObserveTests.m */; };
 		04A8AF2E246934300037F086 /* KVWeakObserveUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8AF2D246934300037F086 /* KVWeakObserveUITests.m */; };
+		04A8AF3E246934530037F086 /* RootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8AF3D246934530037F086 /* RootNavigationController.m */; };
+		04A8AF452469346E0037F086 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8AF432469346E0037F086 /* DetailViewController.m */; };
+		04A8AF462469346E0037F086 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04A8AF442469346E0037F086 /* DetailViewController.xib */; };
+		04A8AF4A2469347C0037F086 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8AF482469347C0037F086 /* HomeViewController.m */; };
+		04A8AF4B2469347C0037F086 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04A8AF492469347C0037F086 /* HomeViewController.xib */; };
+		04A8AF4F246935C10037F086 /* NSObject+WeakObserve.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8AF4E246935C10037F086 /* NSObject+WeakObserve.m */; };
+		04A8AF55246936430037F086 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A8AF54246936430037F086 /* Model.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +61,18 @@
 		04A8AF29246934300037F086 /* KVWeakObserveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KVWeakObserveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04A8AF2D246934300037F086 /* KVWeakObserveUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KVWeakObserveUITests.m; sourceTree = "<group>"; };
 		04A8AF2F246934300037F086 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04A8AF3C246934530037F086 /* RootNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootNavigationController.h; sourceTree = "<group>"; };
+		04A8AF3D246934530037F086 /* RootNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootNavigationController.m; sourceTree = "<group>"; };
+		04A8AF422469346E0037F086 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		04A8AF432469346E0037F086 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		04A8AF442469346E0037F086 /* DetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
+		04A8AF472469347C0037F086 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		04A8AF482469347C0037F086 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		04A8AF492469347C0037F086 /* HomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		04A8AF4D246935C10037F086 /* NSObject+WeakObserve.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+WeakObserve.h"; sourceTree = "<group>"; };
+		04A8AF4E246935C10037F086 /* NSObject+WeakObserve.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+WeakObserve.m"; sourceTree = "<group>"; };
+		04A8AF53246936430037F086 /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
+		04A8AF54246936430037F086 /* Model.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +123,7 @@
 		04A8AF052469342E0037F086 /* KVWeakObserve */ = {
 			isa = PBXGroup;
 			children = (
+				04A8AF3B246934360037F086 /* src */,
 				04A8AF062469342E0037F086 /* AppDelegate.h */,
 				04A8AF072469342E0037F086 /* AppDelegate.m */,
 				04A8AF092469342E0037F086 /* SceneDelegate.h */,
@@ -135,6 +155,33 @@
 				04A8AF2F246934300037F086 /* Info.plist */,
 			);
 			path = KVWeakObserveUITests;
+			sourceTree = "<group>";
+		};
+		04A8AF3B246934360037F086 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				04A8AF4C246935A00037F086 /* data */,
+				04A8AF3C246934530037F086 /* RootNavigationController.h */,
+				04A8AF3D246934530037F086 /* RootNavigationController.m */,
+				04A8AF472469347C0037F086 /* HomeViewController.h */,
+				04A8AF482469347C0037F086 /* HomeViewController.m */,
+				04A8AF492469347C0037F086 /* HomeViewController.xib */,
+				04A8AF422469346E0037F086 /* DetailViewController.h */,
+				04A8AF432469346E0037F086 /* DetailViewController.m */,
+				04A8AF442469346E0037F086 /* DetailViewController.xib */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		04A8AF4C246935A00037F086 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				04A8AF4D246935C10037F086 /* NSObject+WeakObserve.h */,
+				04A8AF4E246935C10037F086 /* NSObject+WeakObserve.m */,
+				04A8AF53246936430037F086 /* Model.h */,
+				04A8AF54246936430037F086 /* Model.m */,
+			);
+			path = data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,7 +289,9 @@
 			files = (
 				04A8AF16246934300037F086 /* LaunchScreen.storyboard in Resources */,
 				04A8AF13246934300037F086 /* Assets.xcassets in Resources */,
+				04A8AF4B2469347C0037F086 /* HomeViewController.xib in Resources */,
 				04A8AF112469342E0037F086 /* Main.storyboard in Resources */,
+				04A8AF462469346E0037F086 /* DetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,8 +318,13 @@
 			files = (
 				04A8AF0E2469342E0037F086 /* ViewController.m in Sources */,
 				04A8AF082469342E0037F086 /* AppDelegate.m in Sources */,
+				04A8AF4F246935C10037F086 /* NSObject+WeakObserve.m in Sources */,
+				04A8AF55246936430037F086 /* Model.m in Sources */,
 				04A8AF19246934300037F086 /* main.m in Sources */,
+				04A8AF3E246934530037F086 /* RootNavigationController.m in Sources */,
 				04A8AF0B2469342E0037F086 /* SceneDelegate.m in Sources */,
+				04A8AF4A2469347C0037F086 /* HomeViewController.m in Sources */,
+				04A8AF452469346E0037F086 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
