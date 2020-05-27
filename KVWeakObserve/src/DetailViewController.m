@@ -32,8 +32,8 @@
 
     
     
-//    [self testMemberVars];
-    [self testUnMemberVars];
+    [self testMemberVars];
+//    [self testUnMemberVars];
     
     
     /**
